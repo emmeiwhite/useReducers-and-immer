@@ -1,14 +1,13 @@
 import React, { useState } from "react";
+import FormLot from "./FormLot";
 
 export default function CounterPage() {
   const [count, setCount] = useState(0);
-  const [lot, setLot] = useState(0);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    let lotValue = parseInt(lot);
-    setCount((prev) => prev + lotValue);
+  const addMore = (lotValue) => {
+    setCount(count + lotValue);
   };
+
   return (
     <div>
       <h1>Current Count: {count}</h1>
@@ -26,8 +25,10 @@ export default function CounterPage() {
         Decrement
       </button>
 
-      <h3>Add a lot</h3>
-      <form onSubmit={handleSubmit}>
+      {/* <h3>Add a lot</h3> */}
+
+      {/* Keeping form here means whenever we type anything in the form controlled field, our whole app will re-render */}
+      {/* <form onSubmit={handleSubmit}>
         <input
           type="number"
           value={lot}
@@ -39,7 +40,10 @@ export default function CounterPage() {
         >
           Add it
         </button>
-      </form>
+      </form> */}
+
+      {/* Lowering the state for less re-renders */}
+      <FormLot addMore={addMore} />
     </div>
   );
 }
