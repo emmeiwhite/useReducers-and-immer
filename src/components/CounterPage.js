@@ -1,6 +1,7 @@
 import React, { useReducer } from "react";
 // import FormLot from "./FormLot";
 
+import { produce } from "immer";
 const INCREMENT = "INCREMENT";
 const DECREMENT = "DECREMENT";
 const LOT = "LOT";
@@ -30,6 +31,8 @@ const reducer = (state, action) => {
    return state;
   */
 
+  /** This was switch case example without immer */
+  /*--
   switch (action.type) {
     case INCREMENT:
       return { ...state, count: state.count + 1 };
@@ -47,11 +50,36 @@ const reducer = (state, action) => {
     default:
       return state;
   }
+  --*/
+
+  /** Immer in actions */
+  if (action.type === INCREMENT) {
+    state.count = state.count + 1;
+    return;
+  }
+
+  if (action.type === DECREMENT) {
+    state.count = state.count - 1;
+    return;
+  }
+  if (action.type === LOT) {
+    state.lot = action.payload;
+    return;
+  }
+
+  if (action.type === LOT_SUMUP) {
+    state.count = state.count + state.lot;
+    return;
+  }
+  return state;
 };
 
 export default function CounterPage() {
   //   const [count, setCount] = useState(0);
-  const [state, dispatch] = useReducer(reducer, defaultState);
+  //   const [state, dispatch] = useReducer(reducer, defaultState);
+
+  /* --- Let's use immer ---*/
+  const [state, dispatch] = useReducer(produce(reducer), defaultState);
 
   const handleChange = (e) => {
     let valueToAdd = parseInt(e.target.value) || 0; //To avoid NaN with empty string
